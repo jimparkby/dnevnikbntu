@@ -1,9 +1,9 @@
 import { redirect } from "next/navigation";
-import { getCurrentUser } from "@/lib/currentUser";
-import { prisma } from "@/lib/prisma";
-import { canEditHomework } from "@/lib/permissions";
-import BottomNav from "@/components/BottomNav";
-import LessonCard from "@/components/LessonCard";
+import { getCurrentUser } from "@/backend/lib/currentUser";
+import { prisma } from "@/backend/lib/prisma";
+import { canEditHomework } from "@/backend/lib/permissions";
+import BottomNav from "@/frontend/components/BottomNav";
+import LessonCard from "@/frontend/components/LessonCard";
 
 const WEEKDAYS = ["", "Понедельник", "Вторник", "Среда", "Четверг", "Пятница", "Суббота"];
 

@@ -1,5 +1,5 @@
-import { prisma } from "@/lib/prisma";
-import type { CurrentUser } from "@/lib/currentUser";
+import { prisma } from "@/backend/lib/prisma";
+import type { CurrentUser } from "@/backend/lib/currentUser";
 
 // Домашние задания: староста — только своей группе; преподаватель — группам,
 // которые он ведёт по данному предмету (см. TeacherSubject).

@@ -1,5 +1,5 @@
-import { prisma } from "@/lib/prisma";
-import { getSession } from "@/lib/session";
+import { prisma } from "@/backend/lib/prisma";
+import { getSession } from "@/backend/lib/session";
 
 export async function getCurrentUser() {
   const session = await getSession();

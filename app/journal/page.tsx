@@ -1,10 +1,10 @@
 import Link from "next/link";
 import { redirect } from "next/navigation";
-import { getCurrentUser } from "@/lib/currentUser";
-import { prisma } from "@/lib/prisma";
-import BottomNav from "@/components/BottomNav";
-import TeacherJournalTable from "@/components/TeacherJournalTable";
-import TeacherHomeworkAction from "@/components/TeacherHomeworkAction";
+import { getCurrentUser } from "@/backend/lib/currentUser";
+import { prisma } from "@/backend/lib/prisma";
+import BottomNav from "@/frontend/components/BottomNav";
+import TeacherJournalTable from "@/frontend/components/TeacherJournalTable";
+import TeacherHomeworkAction from "@/frontend/components/TeacherHomeworkAction";
 
 export default async function JournalPage({ searchParams }: { searchParams: { groupId?: string; subjectId?: string } }) {
   const user = await getCurrentUser();

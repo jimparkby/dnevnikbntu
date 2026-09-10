@@ -1,8 +1,8 @@
 "use client";
 
 import { useState } from "react";
-import GradeChip from "@/components/GradeChip";
-import HomeworkModal from "@/components/HomeworkModal";
+import GradeChip from "@/frontend/components/GradeChip";
+import HomeworkModal from "@/frontend/components/HomeworkModal";
 
 const TYPE_LABELS = { LECTURE: "Лекция", PRACTICE: "Практика", LAB: "Лабораторная" } as const;
 

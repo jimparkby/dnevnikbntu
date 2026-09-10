@@ -1,8 +1,8 @@
 import Link from "next/link";
 import { redirect } from "next/navigation";
-import { getCurrentUser } from "@/lib/currentUser";
-import { prisma } from "@/lib/prisma";
-import BottomNav from "@/components/BottomNav";
+import { getCurrentUser } from "@/backend/lib/currentUser";
+import { prisma } from "@/backend/lib/prisma";
+import BottomNav from "@/frontend/components/BottomNav";
 
 export default async function GroupsPage() {
   const user = await getCurrentUser();

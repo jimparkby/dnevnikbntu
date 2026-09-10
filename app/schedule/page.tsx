@@ -1,7 +1,7 @@
 import { redirect } from "next/navigation";
-import { getCurrentUser } from "@/lib/currentUser";
-import { prisma } from "@/lib/prisma";
-import BottomNav from "@/components/BottomNav";
+import { getCurrentUser } from "@/backend/lib/currentUser";
+import { prisma } from "@/backend/lib/prisma";
+import BottomNav from "@/frontend/components/BottomNav";
 
 const TYPE_LABELS = { LECTURE: "Лекция", PRACTICE: "Практика", LAB: "Лабораторная" } as const;
 const WEEKDAYS = ["", "Понедельник", "Вторник", "Среда", "Четверг", "Пятница", "Суббота"];

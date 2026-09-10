@@ -1,5 +1,5 @@
 import { redirect } from "next/navigation";
-import { getCurrentUser } from "@/lib/currentUser";
+import { getCurrentUser } from "@/backend/lib/currentUser";
 
 export default async function RootPage() {
   const user = await getCurrentUser();

@@ -1,8 +1,8 @@
 "use client";
 
 import { useState } from "react";
-import GradeChip from "@/components/GradeChip";
-import GradeModal from "@/components/GradeModal";
+import GradeChip from "@/frontend/components/GradeChip";
+import GradeModal from "@/frontend/components/GradeModal";
 
 interface Student {
   id: string;

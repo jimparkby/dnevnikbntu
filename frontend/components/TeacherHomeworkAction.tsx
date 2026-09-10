@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import HomeworkModal from "@/components/HomeworkModal";
+import HomeworkModal from "@/frontend/components/HomeworkModal";
 
 export default function TeacherHomeworkAction({
   groupId,

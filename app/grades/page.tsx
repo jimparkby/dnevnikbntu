@@ -1,8 +1,8 @@
 import { redirect } from "next/navigation";
-import { getCurrentUser } from "@/lib/currentUser";
-import { prisma } from "@/lib/prisma";
-import BottomNav from "@/components/BottomNav";
-import GradeChip from "@/components/GradeChip";
+import { getCurrentUser } from "@/backend/lib/currentUser";
+import { prisma } from "@/backend/lib/prisma";
+import BottomNav from "@/frontend/components/BottomNav";
+import GradeChip from "@/frontend/components/GradeChip";
 
 export default async function GradesPage() {
   const user = await getCurrentUser();

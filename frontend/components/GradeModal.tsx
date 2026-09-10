@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { gradeTier } from "@/components/GradeChip";
+import { gradeTier } from "@/frontend/components/GradeChip";
 
 interface Props {
   studentId: string;

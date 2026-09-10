@@ -1,14 +1,6 @@
-import { NextResponse } from "next/server";
-import { prisma } from "@/lib/prisma";
-
+// Thin routing glue required by Next.js (route handlers must live under app/api/**).
+// The actual logic lives in backend/api/faculties.ts.
+// `dynamic` must be declared directly in this file — Next's build-time analyzer
+// reads route segment config statically and does not follow re-exports for it.
 export const dynamic = "force-dynamic";
-
-export async function GET() {
-  const faculties = await prisma.faculty.findMany({
-    orderBy: { shortName: "asc" },
-    include: { groups: { orderBy: { name: "asc" } } },
-  });
-  const subjects = await prisma.subject.findMany({ orderBy: { name: "asc" } });
-
-  return NextResponse.json({ faculties, subjects });
-}
+export { GET } from "@/backend/api/faculties";

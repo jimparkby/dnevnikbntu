@@ -4,12 +4,12 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "prisma generate && next build",
+    "build": "prisma generate --schema=backend/prisma/schema.prisma && next build",
     "start": "next start",
     "lint": "next lint",
-    "db:push": "prisma db push",
-    "db:migrate": "prisma migrate dev",
-    "db:seed": "tsx prisma/seed.ts"
+    "db:push": "prisma db push --schema=backend/prisma/schema.prisma",
+    "db:migrate": "prisma migrate dev --schema=backend/prisma/schema.prisma",
+    "db:seed": "tsx backend/prisma/seed.ts"
   },
   "dependencies": {
     "@prisma/client": "^5.20.0",
@@ -30,7 +30,8 @@
     "typescript": "^5.6.3"
   },
   "prisma": {
-    "seed": "tsx prisma/seed.ts"
+    "schema": "backend/prisma/schema.prisma",
+    "seed": "tsx backend/prisma/seed.ts"
   },
   "allowScripts": {
     "@prisma/client@5.22.0": true,
