@@ -1,0 +1,122 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <style>
+    * { box-sizing: border-box; }
+    body { margin: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; }
+    a { color: #1B4F91; } a:hover { color: #123a6e; }
+  </style>
+</helmet>
+<div style="width:390px; height:844px; background:#F5F6F8; display:flex; flex-direction:column; overflow:hidden; position:relative;">
+
+  <!-- TG header -->
+  <div style="flex-shrink:0; padding:14px 16px 10px 16px; background:#F5F6F8; display:flex; flex-direction:column; gap:2px;">
+    <div style="font-size:20px; font-weight:700; color:#16181C; letter-spacing:-0.2px;">Дневник</div>
+    <div style="font-size:14px; color:#7B8794;">Понедельник, 15 сентября · Группа 10702219</div>
+  </div>
+
+  <!-- Role banner -->
+  <div style="flex-shrink:0; margin:4px 16px 10px 16px; padding:10px 12px; background:#EAF1FB; border-radius:12px; display:flex; align-items:center; gap:8px;">
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#1B4F91" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M19 8v6M22 11h-6"/></svg>
+    <div style="font-size:12.5px; color:#1B4F91; font-weight:600;">Вы староста группы — можно добавлять домашние задания</div>
+  </div>
+
+  <!-- Segmented control -->
+  <div style="flex-shrink:0; margin:0 16px 12px 16px; padding:3px; background:#E9EBEE; border-radius:11px; display:flex;">
+    <div style="flex:1; text-align:center; padding:8px 0; background:#FFFFFF; border-radius:9px; font-size:14px; font-weight:600; color:#16181C; box-shadow:0 1px 2px rgba(0,0,0,0.06);">Сегодня</div>
+    <div style="flex:1; text-align:center; padding:8px 0; font-size:14px; font-weight:500; color:#7B8794;">Неделя</div>
+  </div>
+
+  <div style="flex:1; overflow-y:auto; padding:0 16px 16px 16px; display:flex; flex-direction:column; gap:10px;">
+
+    <!-- Lesson 1 - has homework, editable -->
+    <div style="background:#FFFFFF; border-radius:16px; padding:14px; display:flex; flex-direction:column; gap:8px; border:1px solid #EEF0F2;">
+      <div style="display:flex; align-items:flex-start; justify-content:space-between;">
+        <div style="display:flex; flex-direction:column; gap:2px;">
+          <div style="font-size:12px; font-weight:600; color:#1B4F91;">09:00–10:30 · Лекция</div>
+          <div style="font-size:16px; font-weight:600; color:#16181C;">Математический анализ</div>
+          <div style="font-size:13px; color:#9AA5B1;">ауд. 305, гл. корпус</div>
+        </div>
+        <div style="flex-shrink:0; width:32px; height:32px; border-radius:10px; background:#E6F7ED; display:flex; align-items:center; justify-content:center; font-size:15px; font-weight:700; color:#2FAE60;">9</div>
+      </div>
+      <div style="display:flex; align-items:center; justify-content:space-between; gap:6px; padding-top:6px; border-top:1px solid #F1F2F4;">
+        <div style="display:flex; align-items:center; gap:6px;">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#9AA5B1" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2Z"/></svg>
+          <div style="font-size:13px; color:#516175; line-height:1.4;">ДЗ: №4.12–4.15, гл. 4</div>
+        </div>
+        <div style="flex-shrink:0; width:26px; height:26px; border-radius:8px; background:#F0F2F5; display:flex; align-items:center; justify-content:center;">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#516175" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4Z"/></svg>
+        </div>
+      </div>
+    </div>
+
+    <!-- Lesson 2 - no homework, add button -->
+    <div style="background:#FFFFFF; border-radius:16px; padding:14px; display:flex; flex-direction:column; gap:8px; border:1px solid #EEF0F2;">
+      <div style="display:flex; align-items:flex-start; justify-content:space-between;">
+        <div style="display:flex; flex-direction:column; gap:2px;">
+          <div style="font-size:12px; font-weight:600; color:#1B4F91;">10:45–12:15 · Практика</div>
+          <div style="font-size:16px; font-weight:600; color:#16181C;">Программирование</div>
+          <div style="font-size:13px; color:#9AA5B1;">ауд. 213, корп. 12</div>
+        </div>
+      </div>
+      <div style="display:flex; align-items:center; justify-content:space-between; padding-top:6px; border-top:1px solid #F1F2F4;">
+        <div style="font-size:13px; color:#B4BCC4;">Домашнее задание не задано</div>
+        <div style="flex-shrink:0; display:flex; align-items:center; gap:5px; padding:6px 10px; background:#1B4F91; border-radius:8px;">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14"/></svg>
+          <div style="font-size:12.5px; font-weight:600; color:#fff;">Добавить ДЗ</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Lesson 3 -->
+    <div style="background:#FFFFFF; border-radius:16px; padding:14px; display:flex; flex-direction:column; gap:8px; border:1px solid #EEF0F2;">
+      <div style="display:flex; align-items:flex-start; justify-content:space-between;">
+        <div style="display:flex; flex-direction:column; gap:2px;">
+          <div style="font-size:12px; font-weight:600; color:#1B4F91;">13:00–14:30 · Лекция</div>
+          <div style="font-size:16px; font-weight:600; color:#16181C;">Физика</div>
+          <div style="font-size:13px; color:#9AA5B1;">ауд. 101, гл. корпус</div>
+        </div>
+        <div style="flex-shrink:0; width:32px; height:32px; border-radius:10px; background:#FDF3E3; display:flex; align-items:center; justify-content:center; font-size:15px; font-weight:700; color:#E8A33D;">6</div>
+      </div>
+      <div style="display:flex; align-items:center; justify-content:space-between; padding-top:6px; border-top:1px solid #F1F2F4;">
+        <div style="font-size:13px; color:#B4BCC4;">Домашнее задание не задано</div>
+        <div style="flex-shrink:0; display:flex; align-items:center; gap:5px; padding:6px 10px; background:#1B4F91; border-radius:8px;">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14"/></svg>
+          <div style="font-size:12.5px; font-weight:600; color:#fff;">Добавить ДЗ</div>
+        </div>
+      </div>
+    </div>
+
+    <div style="text-align:center; font-size:12px; color:#B4BCC4; padding:8px 0 4px 0;">Оценки выставляет только преподаватель</div>
+  </div>
+
+  <!-- Bottom tab bar -->
+  <div style="flex-shrink:0; display:flex; padding:8px 8px 22px 8px; background:#FFFFFF; border-top:1px solid #EEF0F2;">
+    <div style="flex:1; display:flex; flex-direction:column; align-items:center; gap:3px; color:#1B4F91;">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#1B4F91" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2Z"/></svg>
+      <div style="font-size:11px; font-weight:600;">Дневник</div>
+    </div>
+    <div style="flex:1; display:flex; flex-direction:column; align-items:center; gap:3px; color:#9AA5B1;">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#9AA5B1" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="3"/><path d="M3 10h18M8 2v4M16 2v4"/></svg>
+      <div style="font-size:11px;">Расписание</div>
+    </div>
+    <div style="flex:1; display:flex; flex-direction:column; align-items:center; gap:3px; color:#9AA5B1;">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#9AA5B1" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v18h18"/><path d="M7 15l4-5 3 3 5-7"/></svg>
+      <div style="font-size:11px;">Оценки</div>
+    </div>
+    <div style="flex:1; display:flex; flex-direction:column; align-items:center; gap:3px; color:#9AA5B1;">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#9AA5B1" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 3.6-7 8-7s8 3 8 7"/></svg>
+      <div style="font-size:11px;">Профиль</div>
+    </div>
+  </div>
+
+</div>
+</x-dc>
+</body>
+</html>

@@ -1,0 +1,16 @@
+node_modules
+.next
+out
+.env
+.env.local
+.env*.local
+*.log
+.DS_Store
+/prisma/dev.db
+next-env.d.ts
+tsconfig.tsbuildinfo
+
+# generated design-canvas payload (~2.5MB editor bundle) — source of truth is design/*.dc.html;
+# the published copy lives at https://claude.ai/code/artifact/14f369c5-5885-496e-9aec-1a56b24758d8
+design/dnevnik-bntu-design.html
+
