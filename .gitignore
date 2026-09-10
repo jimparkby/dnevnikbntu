@@ -14,3 +14,7 @@ tsconfig.tsbuildinfo
 # the published copy lives at https://claude.ai/code/artifact/14f369c5-5885-496e-9aec-1a56b24758d8
 design/dnevnik-bntu-design.html
 
+
+.vercel
+.env*
+!.env.example
