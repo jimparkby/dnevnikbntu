@@ -9,7 +9,8 @@
     "lint": "next lint",
     "db:push": "prisma db push --schema=backend/prisma/schema.prisma",
     "db:migrate": "prisma migrate dev --schema=backend/prisma/schema.prisma",
-    "db:seed": "tsx backend/prisma/seed.ts"
+    "db:seed": "tsx backend/prisma/seed.ts",
+    "import:schedule": "tsx backend/prisma/import-schedule.ts"
   },
   "dependencies": {
     "@prisma/client": "^5.20.0",
