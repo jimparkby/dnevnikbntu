@@ -42,7 +42,7 @@ export default async function JournalPage({ searchParams }: { searchParams: { gr
   const dates = Array.from(new Set([...gradeDates, todayStr])).sort().slice(-4);
 
   return (
-    <div className="flex h-screen flex-col overflow-hidden bg-bg">
+    <div className="flex h-screen flex-col overflow-hidden bg-bg pt-[var(--tg-safe-top)]">
       <div className="flex-shrink-0 px-4 pb-2.5 pt-3.5">
         <h1 className="text-xl font-bold tracking-tight text-text">Журнал</h1>
         <p className="text-sm text-text-secondary">{selected.subject.name} · Преподаватель</p>

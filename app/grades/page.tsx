@@ -23,7 +23,7 @@ export default async function GradesPage() {
   }
 
   return (
-    <div className="flex h-screen flex-col overflow-hidden bg-bg">
+    <div className="flex h-screen flex-col overflow-hidden bg-bg pt-[var(--tg-safe-top)]">
       <div className="flex-shrink-0 px-4 pb-2.5 pt-3.5">
         <h1 className="text-xl font-bold tracking-tight text-text">Оценки</h1>
         <p className="text-sm text-text-secondary">Группа {user.group?.name}</p>

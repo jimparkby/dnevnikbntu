@@ -1,4 +1,5 @@
 import { PrismaClient } from "@prisma/client";
+import bntuGroups from "./data/bntu-groups.json";
 
 const prisma = new PrismaClient();
 
@@ -14,7 +15,7 @@ const FACULTIES: { shortName: string; name: string }[] = [
   { shortName: "ПСФ", name: "Приборостроительный факультет" },
   { shortName: "СТФ", name: "Спортивно-технический факультет" },
   { shortName: "СФ", name: "Строительный факультет" },
-  { shortName: "ФГДЭ", name: "Факультет горного дела и инженерной экологии" },
+  { shortName: "ФГДИЭ", name: "Факультет горного дела и инженерной экологии" },
   { shortName: "ФИТР", name: "Факультет информационных технологий и робототехники" },
   { shortName: "ФММП", name: "Факультет маркетинга, менеджмента, предпринимательства" },
   { shortName: "ФТУГ", name: "Факультет технологий управления и гуманитаризации" },
@@ -23,13 +24,34 @@ const FACULTIES: { shortName: string; name: string }[] = [
   { shortName: "ЭФ", name: "Энергетический факультет" },
 ];
 
+// Real group numbers per faculty, pulled from the public BNTU schedule
+// catalog (supbntu.site/api/schedule/catalog, itself sourced from bntu.by)
+// on 2026-09-11. ВТФ and МИДО aren't covered by that catalog, so they stay
+// without groups until an admin adds them.
+const GROUPS_BY_FACULTY: Record<string, string[]> = bntuGroups;
+
 async function main() {
+  const faculties: Record<string, { id: string }> = {};
   for (const f of FACULTIES) {
-    await prisma.faculty.upsert({
+    faculties[f.shortName] = await prisma.faculty.upsert({
       where: { shortName: f.shortName },
       update: { name: f.name },
       create: f,
     });
+  }
+
+  let groupCount = 0;
+  for (const [shortName, groupNames] of Object.entries(GROUPS_BY_FACULTY)) {
+    const faculty = faculties[shortName];
+    if (!faculty) continue;
+    for (const name of groupNames) {
+      await prisma.group.upsert({
+        where: { name },
+        update: { facultyId: faculty.id },
+        create: { name, facultyId: faculty.id },
+      });
+      groupCount++;
+    }
   }
 
   const fitr = await prisma.faculty.findUniqueOrThrow({ where: { shortName: "ФИТР" } });
@@ -72,7 +94,9 @@ async function main() {
     }
   }
 
-  console.log(`Seeded ${FACULTIES.length} faculties, 1 demo group (${group.name}), ${subjects.length} subjects.`);
+  console.log(
+    `Seeded ${FACULTIES.length} faculties, ${groupCount} real groups + 1 demo group (${group.name}), ${subjects.length} subjects.`
+  );
 }
 
 main()
