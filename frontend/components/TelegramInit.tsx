@@ -30,7 +30,9 @@ export default function TelegramInit() {
     // populate) and push our own headers down by that amount.
     const applySafeArea = () => {
       const top = (tg.safeAreaInset?.top ?? 0) + (tg.contentSafeAreaInset?.top ?? 0);
+      const bottom = (tg.safeAreaInset?.bottom ?? 0) + (tg.contentSafeAreaInset?.bottom ?? 0);
       document.documentElement.style.setProperty("--tg-safe-top", `${top}px`);
+      document.documentElement.style.setProperty("--tg-safe-bottom", `${bottom}px`);
     };
     applySafeArea();
     tg.onEvent?.("safeAreaChanged", applySafeArea);

@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { redirect } from "next/navigation";
 import { getCurrentUser } from "@/backend/lib/currentUser";
 import BottomNav from "@/frontend/components/BottomNav";
@@ -40,6 +41,13 @@ export default async function ProfilePage() {
             )}
           </div>
         </div>
+
+        <Link
+          href="/onboarding"
+          className="mt-2.5 block rounded-card border border-[#EEF0F2] bg-card p-3.5 text-center text-sm font-semibold text-primary [touch-action:manipulation]"
+        >
+          {user.role === "TEACHER" ? "Изменить роль и предметы" : "Сменить роль или группу"}
+        </Link>
       </div>
 
       <BottomNav role={user.role} />

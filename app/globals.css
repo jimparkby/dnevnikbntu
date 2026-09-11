@@ -11,8 +11,10 @@ body {
 
 :root {
   /* Space covered by Telegram's own fullscreen header controls
-     (close / minimize / more menu), on top of the device safe area. */
-  --tg-safe-top: var(--tg-content-safe-area-inset-top, env(safe-area-inset-top, 0px));
+     (close / minimize / more menu), on top of the device safe area.
+     TelegramInit overrides these from the SDK once it boots. */
+  --tg-safe-top: env(safe-area-inset-top, 0px);
+  --tg-safe-bottom: env(safe-area-inset-bottom, 0px);
 }
 
 * {

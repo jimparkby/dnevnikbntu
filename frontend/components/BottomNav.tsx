@@ -38,11 +38,11 @@ export default function BottomNav({ role }: { role: Role }) {
   const items = [primary, { href: "/schedule", label: "Расписание", icon: "calendar" as const }, third, { href: "/profile", label: "Профиль", icon: "person" as const }];
 
   return (
-    <nav className="flex flex-shrink-0 border-t border-[#EEF0F2] bg-white px-2 pb-[22px] pt-2">
+    <nav className="flex flex-shrink-0 border-t border-[#EEF0F2] bg-white px-2 pt-2 pb-[calc(10px+var(--tg-safe-bottom))]">
       {items.map((item) => {
         const active = pathname === item.href;
         return (
-          <Link key={item.href} href={item.href} className="flex flex-1 flex-col items-center gap-[3px]">
+          <Link key={item.href} href={item.href} className="flex flex-1 flex-col items-center gap-[3px] [touch-action:manipulation]">
             <Icon name={item.icon} active={active} />
             <span className={`text-[11px] ${active ? "font-semibold text-primary" : "text-text-muted"}`}>{item.label}</span>
           </Link>
