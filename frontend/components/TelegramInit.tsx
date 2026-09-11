@@ -23,6 +23,20 @@ export default function TelegramInit() {
     tg.setHeaderColor?.("#F5F6F8");
     tg.setBackgroundColor?.("#F5F6F8");
 
+    // requestFullscreen() makes Telegram float its own close/expand/menu
+    // controls over the top of our content instead of reserving a header
+    // bar for them, so we read the resulting inset directly from the SDK
+    // (rather than relying on the --tg-* CSS vars, which some clients never
+    // populate) and push our own headers down by that amount.
+    const applySafeArea = () => {
+      const top = (tg.safeAreaInset?.top ?? 0) + (tg.contentSafeAreaInset?.top ?? 0);
+      document.documentElement.style.setProperty("--tg-safe-top", `${top}px`);
+    };
+    applySafeArea();
+    tg.onEvent?.("safeAreaChanged", applySafeArea);
+    tg.onEvent?.("contentSafeAreaChanged", applySafeArea);
+    tg.onEvent?.("fullscreenChanged", applySafeArea);
+
     fetch("/api/auth/telegram", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
