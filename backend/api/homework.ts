@@ -7,6 +7,7 @@ interface Body {
   groupId: string;
   subjectId: string;
   scheduleEntryId?: string;
+  homeworkId?: string;
   text: string;
   deadline: string; // yyyy-mm-dd
 }
@@ -23,6 +24,18 @@ export async function POST(req: NextRequest) {
   const allowed = await canEditHomework(user, body.groupId, body.subjectId);
   if (!allowed) {
     return NextResponse.json({ error: "forbidden" }, { status: 403 });
+  }
+
+  if (body.homeworkId) {
+    const existing = await prisma.homework.findUnique({ where: { id: body.homeworkId } });
+    if (!existing || existing.groupId !== body.groupId || existing.subjectId !== body.subjectId) {
+      return NextResponse.json({ error: "homework_not_found" }, { status: 400 });
+    }
+    const homework = await prisma.homework.update({
+      where: { id: existing.id },
+      data: { text: body.text, deadline: new Date(body.deadline) },
+    });
+    return NextResponse.json({ ok: true, homework });
   }
 
   const existing = body.scheduleEntryId
