@@ -94,6 +94,7 @@ model ScheduleEntry {
   subjectId String
   subject   Subject    @relation(fields: [subjectId], references: [id])
   dayOfWeek Int // 1 = Monday ... 6 = Saturday
+  week      Int? // 1 or 2 (odd/even), null = every week
   startTime String // "09:00"
   endTime   String // "10:30"
   room      String?

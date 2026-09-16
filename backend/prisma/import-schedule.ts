@@ -1,7 +1,11 @@
 import { PrismaClient, LessonType } from "@prisma/client";
 import bntuGroups from "./data/bntu-groups.json";
 
-const prisma = new PrismaClient();
+// Railway's proxy doesn't actually allow ~29 pooled connections — the pool
+// exhausts and prisma throws P2024. Cap the client pool to a sane number.
+const dbUrl = new URL(process.env.DATABASE_URL ?? "");
+dbUrl.searchParams.set("connection_limit", "5");
+const prisma = new PrismaClient({ datasources: { db: { url: dbUrl.toString() } } });
 
 // One-off / periodic import of real lesson timetables from the public
 // BNTU schedule aggregator (supbntu.site, itself sourced from bntu.by).
@@ -9,11 +13,12 @@ const prisma = new PrismaClient();
 // takes several minutes, so it's meant to be run manually when the
 // semester timetable needs refreshing: `npm run import:schedule`.
 //
-// Known simplification: the source alternates some lessons by week parity
-// (week: 1 | 2) or splits a slot by subgroup. We don't model that here —
-// every lesson listed for a day/time slot becomes its own ScheduleEntry,
-// so a student may see two lessons stacked in the same slot when in
-// reality they alternate week to week.
+// Known simplifications: the source splits some slots by subgroup
+// (subgroup: 1 | 2) or offers alternatives ("variants"). We don't model
+// that — every lesson listed for a day/time slot becomes its own
+// ScheduleEntry (with its week when it alternates 1|2), so a student in a
+// split/variants slot may see two lessons stacked for the same time. Weekly
+// alternation (week: 1/2) IS recorded, so the app can show the right half.
 
 const TYPE_MAP: Record<string, LessonType> = {
   "лекция": "LECTURE",
@@ -28,11 +33,13 @@ interface SourceLesson {
   title: string;
   type: string;
   room?: string;
+  week?: number; // 1 | 2, present only for lessons that alternate weekly
 }
 interface SourceSlot {
   time: string;
   endTime: string;
   lessons: SourceLesson[];
+  mode?: string; // "single" | "weeks" | "split" | "variants"
 }
 interface SourceSchedule {
   days?: Record<string, SourceSlot[]>;
@@ -46,19 +53,23 @@ function sleep(ms: number) {
 
 async function fetchGroupSchedule(faculty: string, group: string): Promise<SourceSchedule | null> {
   const url = `https://supbntu.site/api/schedule/${encodeURIComponent(faculty)}/${group}`;
-  for (let attempt = 1; attempt <= 3; attempt++) {
+  const controller = new AbortController();
+  const timer = setTimeout(() => controller.abort(), 10000);
+  for (let attempt = 1; attempt <= 2; attempt++) {
     try {
-      const res = await fetch(url);
+      const res = await fetch(url, { signal: controller.signal });
       if (!res.ok) return null;
+      clearTimeout(timer);
       return (await res.json()) as SourceSchedule;
     } catch (err) {
-      if (attempt === 3) {
+      if (attempt === 2) {
         console.warn(`  failed ${faculty}/${group}: ${(err as Error).message}`);
         return null;
       }
-      await sleep(500 * attempt);
+      await sleep(400 * attempt);
     }
   }
+  clearTimeout(timer);
   return null;
 }
 
@@ -74,6 +85,7 @@ async function main() {
 
   let groupsProcessed = 0;
   let groupsWithData = 0;
+  let skipped = 0;
   let entriesCreated = 0;
   let fetchFailures = 0;
 
@@ -86,6 +98,15 @@ async function main() {
       const group = await prisma.group.findUnique({ where: { name: groupName } });
       if (!group) continue;
 
+      // Resume support: groups already rewritten with week-aware rows are skipped.
+      const alreadyImported = await prisma.scheduleEntry.count({
+        where: { groupId: group.id, week: { not: null } },
+      });
+      if (alreadyImported > 0) {
+        skipped++;
+        continue;
+      }
+
       const schedule = await fetchGroupSchedule(facultyShortName, groupName);
       await sleep(150);
 
@@ -94,7 +115,7 @@ async function main() {
         continue;
       }
 
-      const rows: { groupId: string; subjectId: string; dayOfWeek: number; startTime: string; endTime: string; room: string | null; type: LessonType }[] = [];
+      const rows: { groupId: string; subjectId: string; dayOfWeek: number; week: number | null; startTime: string; endTime: string; room: string | null; type: LessonType }[] = [];
 
       for (const [dayKey, slots] of Object.entries(schedule.days)) {
         const dayOfWeek = Number(dayKey);
@@ -109,6 +130,7 @@ async function main() {
               groupId: group.id,
               subjectId,
               dayOfWeek,
+              week: lesson.week ?? null,
               startTime: slot.time,
               endTime: slot.endTime,
               room: lesson.room?.trim() || null,
@@ -125,14 +147,14 @@ async function main() {
       entriesCreated += rows.length;
       groupsWithData++;
 
-      if (groupsProcessed % 50 === 0) {
-        console.log(`  ...${groupsProcessed} groups processed (${entriesCreated} lesson rows so far)`);
+      if (groupsProcessed % 25 === 0) {
+        console.log(`  ...${groupsProcessed} groups checked (${entriesCreated} lesson rows so far, ${skipped} skipped resumable)`);
       }
     }
   }
 
   console.log(
-    `Done. ${groupsProcessed} groups checked, ${groupsWithData} had a schedule (${entriesCreated} lesson rows), ${fetchFailures} fetch failures, ${subjectIds.size} distinct subjects.`
+    `Done. ${groupsProcessed} groups checked, ${skipped} already imported, ${groupsWithData} got fresh data (${entriesCreated} lesson rows), ${fetchFailures} fetch failures, ${subjectIds.size} distinct subjects.`
   );
 }
 

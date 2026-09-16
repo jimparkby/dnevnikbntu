@@ -1,5 +1,7 @@
 import { redirect } from "next/navigation";
+import Link from "next/link";
 import { getCurrentUser } from "@/backend/lib/currentUser";
+import { currentWeekParity } from "@/backend/lib/week";
 import { prisma } from "@/backend/lib/prisma";
 import BottomNav from "@/frontend/components/BottomNav";
 import TasksSection from "@/frontend/components/TasksSection";
@@ -7,7 +9,7 @@ import TasksSection from "@/frontend/components/TasksSection";
 const TYPE_LABELS = { LECTURE: "Лекция", PRACTICE: "Практика", LAB: "Лабораторная" } as const;
 const WEEKDAYS = ["", "Понедельник", "Вторник", "Среда", "Четверг", "Пятница", "Суббота"];
 
-export default async function SchedulePage() {
+export default async function SchedulePage({ searchParams }: { searchParams: { week?: string } }) {
   const user = await getCurrentUser();
   if (!user || !user.role) redirect("/onboarding");
   if (user.role === "TEACHER") {
@@ -28,8 +30,14 @@ export default async function SchedulePage() {
 
   if (!user.groupId) redirect("/onboarding");
 
+  const currentWeek = currentWeekParity();
+  const week = searchParams.week === "1" || searchParams.week === "2" ? Number(searchParams.week) as 1 | 2 : currentWeek;
+
   const lessons = await prisma.scheduleEntry.findMany({
-    where: { groupId: user.groupId },
+    where: {
+      groupId: user.groupId,
+      OR: [{ week: null }, { week }],
+    },
     include: { subject: true },
     orderBy: [{ dayOfWeek: "asc" }, { startTime: "asc" }],
   });
@@ -57,6 +65,20 @@ export default async function SchedulePage() {
       <div className="flex-shrink-0 px-4 pb-2.5 pt-3.5">
         <h1 className="text-xl font-bold tracking-tight text-text">Расписание</h1>
         <p className="text-sm text-text-secondary">Группа {user.group?.name} · на неделю</p>
+        <div className="mt-2.5 flex gap-2">
+          {([1, 2] as const).map((w) => (
+            <Link
+              key={w}
+              href={`/schedule?week=${w}`}
+              className={`flex flex-1 items-center justify-center gap-1.5 rounded-control px-3 py-2 text-sm font-medium [touch-action:manipulation] ${
+                week === w ? "bg-primary font-semibold text-white" : "border border-border bg-card text-text"
+              }`}
+            >
+              {w}-я неделя
+              {w === currentWeek && <span className={`text-[11px] ${week === w ? "text-white/80" : "text-text-muted"}`}>сейчас</span>}
+            </Link>
+          ))}
+        </div>
       </div>
 
       <div className="flex-1 overflow-y-auto px-4 pb-4">

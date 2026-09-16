@@ -1,5 +1,6 @@
 import { redirect } from "next/navigation";
 import { getCurrentUser } from "@/backend/lib/currentUser";
+import { currentWeekParity } from "@/backend/lib/week";
 import { prisma } from "@/backend/lib/prisma";
 import { canEditHomework } from "@/backend/lib/permissions";
 import BottomNav from "@/frontend/components/BottomNav";
@@ -16,10 +17,11 @@ export default async function DiaryPage() {
   const today = new Date();
   const jsDay = today.getDay(); // 0 = Sunday
   const dayOfWeek = jsDay === 0 ? 7 : jsDay;
+  const currentWeek = currentWeekParity(today);
   const todayStr = today.toISOString().slice(0, 10);
 
   const lessons = await prisma.scheduleEntry.findMany({
-    where: { groupId: user.groupId, dayOfWeek },
+    where: { groupId: user.groupId, dayOfWeek, OR: [{ week: null }, { week: currentWeek }] },
     include: {
       subject: true,
       homework: { orderBy: { createdAt: "desc" }, take: 1 },
